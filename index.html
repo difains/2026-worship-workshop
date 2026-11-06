@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 서중교 중고등부 찬양팀 예배자 교육 — 가짜 예배자</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cosmic-bg: #07070d;
+            --card-bg: rgba(16, 16, 26, 0.82);
+            --card-border: rgba(255, 255, 255, 0.12);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body {
+            background-color: var(--cosmic-bg);
+            color: #f3f4f6;
+            font-family: 'Noto Sans KR', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .presentation-viewport {
+            width: 100vw; height: 100vh; height: 100dvh;
+            display: flex; align-items: center; justify-content: center;
+            background: #040408; position: relative; overflow: hidden;
+        }
+        .slide-stage {
+            width: 100%; height: 100%; max-width: 1600px; max-height: 900px;
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            background: #07070d;
+            background-image: radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.22) 0%, transparent 60%),
+                              radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.14) 0%, transparent 50%),
+                              radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.12) 0%, transparent 45%);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95);
+        }
+        @media (min-width: 1600px) and (min-height: 900px) {
+            .slide-stage { border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+        }
+        .ambient-orb {
+            position: absolute; border-radius: 9999px; filter: blur(65px);
+            pointer-events: none; z-index: 0; opacity: 0.45;
+        }
+        .ambient-orb-purple { width: 480px; height: 480px; background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, transparent 70%); top: -120px; right: 8%; }
+        .ambient-orb-blue { width: 420px; height: 420px; background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 70%); bottom: -90px; left: 5%; }
+        .ambient-orb-gold { width: 350px; height: 350px; background: radial-gradient(circle, rgba(251, 191, 36, 0.28) 0%, transparent 70%); top: 38%; left: 42%; }
+
+        .slide {
+            position: absolute; inset: 0; display: none; flex-direction: column;
+            justify-content: flex-start; align-items: center;
+            padding: 4.5rem 1.25rem 3.5rem 1.25rem;
+            overflow-y: auto; -webkit-overflow-scrolling: touch; z-index: 10; opacity: 0; pointer-events: none;
+        }
+        @media (min-width: 768px) {
+            .slide { justify-content: center; padding: 4.5rem 3rem 3.25rem 3rem; }
+        }
+        @media (min-width: 1200px) {
+            .slide { padding: 4.75rem 4.5rem 3.5rem 4.5rem; }
+        }
+        .slide.active {
+            display: flex !important; opacity: 1 !important; pointer-events: auto !important; z-index: 20;
+            animation: slideFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .slide.outgoing-forward {
+            display: flex !important; animation: slideExitForward 0.28s cubic-bezier(0.2, 0, 0.8, 0.2) forwards;
+            pointer-events: none; z-index: 15;
+        }
+        .slide.outgoing-backward {
+            display: flex !important; animation: slideExitBackward 0.28s cubic-bezier(0.2, 0, 0.8, 0.2) forwards;
+            pointer-events: none; z-index: 15;
+        }
+        @keyframes slideFadeIn {
+            0% { opacity: 0; transform: scale(0.97) translateY(12px); filter: blur(3px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+        @keyframes slideExitForward {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.96) translateY(-14px); }
+        }
+        @keyframes slideExitBackward {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(1.03) translateY(14px); }
+        }
+        .worship-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--card-border); border-radius: 1.15rem;
+            transition: all 0.25s ease; box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.75);
+        }
+        .worship-card:hover {
+            border-color: rgba(255, 255, 255, 0.25); background: rgba(24, 24, 38, 0.92);
+            transform: translateY(-2px);
+        }
+        .text-gradient-purple { background: linear-gradient(135deg, #ffffff 10%, #d8b4fe 55%, #c084fc 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .text-gradient-gold { background: linear-gradient(135deg, #ffffff 10%, #fde68a 55%, #f59e0b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .text-gradient-blue { background: linear-gradient(135deg, #ffffff 10%, #bae6fd 55%, #38bdf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .text-gradient-rose { background: linear-gradient(135deg, #ffffff 10%, #fecdd3 55%, #f43f5e 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .text-gradient-emerald { background: linear-gradient(135deg, #ffffff 10%, #a7f3d0 55%, #10b981 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        
+        .wit-badge {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.25rem 0.65rem; border-radius: 9999px;
+            background: rgba(251, 191, 36, 0.14); border: 1px solid rgba(251, 191, 36, 0.35);
+            color: #fde68a; font-size: 0.85rem; font-weight: 700;
+        }
+        .theo-box {
+            background: linear-gradient(90deg, rgba(88, 28, 135, 0.35) 0%, rgba(30, 58, 138, 0.35) 100%);
+            border-left: 4px solid #c084fc;
+        }
+        .custom-check {
+            appearance: none; width: 1.5rem; height: 1.5rem;
+            border: 2px solid rgba(244, 63, 94, 0.6); border-radius: 0.4rem;
+            background: rgba(244, 63, 94, 0.12); cursor: pointer; position: relative; transition: all 0.2s ease; shrink: 0;
+        }
+        .custom-check:checked { background: #f43f5e; border-color: #f43f5e; }
+        .custom-check:checked::after {
+            content: '✓'; position: absolute; color: white; font-size: 1rem; font-weight: bold;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+        .modal-backdrop { background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(16px); }
+    </style>
+</head>
+<body>
+    <div class="presentation-viewport">
+        <div class="slide-stage" id="slideStage">
+            <div class="ambient-orb ambient-orb-purple"></div>
+            <div class="ambient-orb ambient-orb-blue"></div>
+            <div class="ambient-orb ambient-orb-gold"></div>
+
+            <!-- Top Global Header -->
+            <header class="absolute top-0 left-0 right-0 h-14 px-3 sm:px-8 flex items-center justify-between text-xs sm:text-sm text-zinc-400 z-40 select-none bg-black/70 backdrop-blur-md border-b border-white/10">
+                <div class="flex items-center space-x-2.5 truncate mr-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded bg-purple-950/90 border border-purple-500/50 text-purple-300 font-mono text-xs font-extrabold tracking-tight shrink-0">John.C</span>
+                    <span class="text-zinc-100 font-bold tracking-tight text-sm sm:text-base truncate hidden sm:inline" id="headerCategory">가짜 예배자 | 워크샵</span>
+                    <span class="hidden md:inline text-zinc-600">•</span>
+                    <span class="hidden md:inline text-zinc-300 font-medium truncate" id="headerSubtitle">서중교 중고등부 찬양팀 예배자 교육</span>
+                    <span class="inline sm:hidden text-zinc-200 font-bold text-xs truncate">서중교 중고등부 찬양팀</span>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                    <span id="weekBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-zinc-900 border border-amber-500/40 text-amber-300 text-xs font-bold">1주차 교육</span>
+                    <button onclick="toggleSlideIndex()" class="px-2.5 py-1 rounded bg-zinc-900 border border-zinc-700 hover:border-zinc-400 text-zinc-200 text-xs font-mono flex items-center space-x-1 transition-colors">
+                        <span>목차</span>
+                        <span id="slideIndicator" class="text-white font-extrabold ml-1">01 / 34</span>
+                    </button>
+                    <button onclick="toggleFullScreen()" class="hidden sm:inline-flex p-1.5 rounded bg-zinc-900 border border-zinc-700 hover:border-zinc-400 text-zinc-200 transition-colors" title="전체화면 (F)">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                    </button>
+                    <div class="flex items-center space-x-1">
+                        <button onclick="prevSlide()" class="w-7 h-7 rounded-full bg-zinc-900 border border-zinc-700 hover:border-zinc-400 flex items-center justify-center text-zinc-200 hover:text-white text-sm font-bold">‹</button>
+                        <button onclick="nextSlide()" class="w-7 h-7 rounded-full bg-zinc-900 border border-zinc-700 hover:border-zinc-400 flex items-center justify-center text-zinc-200 hover:text-white text-sm font-bold">›</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SLIDE 01: COVER -->
+            <div class="slide active" id="slide-1" data-cat="가짜 예배자 | 오프닝" data-sub="2026 서중교 중고등부 찬양팀 워크샵" data-week="WORKSHOP">
+                <div class="flex flex-col items-center justify-center max-w-5xl mx-auto w-full my-auto text-center px-4">
+                    <div class="wit-badge mb-5">🎸 "악기 좀 친다고 천국 VIP 프리패스인 줄 알았지?"</div>
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 relative">
+                        <div class="absolute inset-0 rounded-full bg-purple-500/40 filter blur-xl animate-pulse"></div>
+                        <img src="assets/icon_mic_3d.png" alt="Mic" class="w-full h-full object-contain relative z-10 drop-shadow-2xl">
+                    </div>
+                    <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white mb-3">
+                        <span class="text-gradient-purple">가짜 예배자</span>
+                    </h1>
+                    <p class="text-xl sm:text-2xl md:text-3xl text-zinc-200 font-bold tracking-tight mb-5">
+                        무대 위의 아이돌인가, 제단 앞의 산 제물인가?
+                    </p>
+                    <p class="text-zinc-300 text-base sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+                        찬양팀의 자리는 하나님을 가장 가까이서 섬기는 <b class="text-amber-300">영광의 자리</b>이자,<br>
+                        박수와 조명 속에 내 영혼을 잃어버리기 가장 쉬운 <b class="text-rose-400">위험한 자리</b>입니다.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-3 text-sm sm:text-base text-zinc-300 font-medium">
+                        <span class="px-4 py-2 rounded-xl bg-zinc-900/90 border border-zinc-700">진행: <b class="text-white">John.C (최요한 집사)</b></span>
+                        <span class="px-4 py-2 rounded-xl bg-zinc-900/90 border border-zinc-700">대상: <b class="text-purple-300">서중교 중고등부 찬양팀</b></span>
+                        <span class="px-4 py-2 rounded-xl bg-zinc-900/90 border border-zinc-700">구성: <b class="text-amber-300">2주 팩폭 & 은혜 워크샵</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 02: 두 갈래 길 도해 -->
+            <div class="slide" id="slide-2" data-cat="가짜 예배자 | 오리엔테이션" data-sub="우리는 어디에 서 있는가?" data-week="INTRO">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">⚡ 같은 무대, 전혀 다른 엔딩</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            우리는 지금 <span class="text-gradient-purple">어느 길에 서 있는가?</span>
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 분기점 다이어그램 -->
+                    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 w-full items-stretch mb-5">
+                        <div class="md:col-span-5 worship-card p-6 border-rose-500/40 bg-rose-950/15 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/40">🎭 가짜 예배자 (Performer)</span>
+                                    <span class="text-sm text-rose-400 font-bold">시선: 사람들 👀</span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">"나 오늘 좀 멋있었냐?"</h3>
+                                <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                    <li>• <b>재능기부 착각:</b> "내가 쳐주니까 교회가 돌아가지"</li>
+                                    <li>• <b>감정 소비:</b> 비트와 조명에 취해 은혜받았다고 착각</li>
+                                    <li>• <b>삶의 분리:</b> 무대에선 천사, 내려오면 분노조절장애</li>
+                                </ul>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-rose-500/30 text-sm text-rose-300 font-bold">
+                                🚨 결과: 하나님은 안 계시고 '나'만 남는 단독 콘서트
+                            </div>
+                        </div>
+
+                        <!-- Center VS Visual -->
+                        <div class="md:col-span-1 flex md:flex-col items-center justify-center py-2">
+                            <div class="w-12 h-12 rounded-full bg-zinc-900 border-2 border-purple-500 flex items-center justify-center font-black text-lg text-purple-300 shadow-lg">VS</div>
+                        </div>
+
+                        <div class="md:col-span-5 worship-card p-6 border-purple-500/50 bg-purple-950/20 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/40">🔥 진정한 예배자 (Worshiper)</span>
+                                    <span class="text-sm text-purple-300 font-bold">시선: 하나님 ☝️</span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">"주님만 홀로 영광 받으소서!"</h3>
+                                <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                    <li>• <b>은혜의 빚진 자:</b> "나 같은 죄인을 찬양팀에 쓰시다니!"</li>
+                                    <li>• <b>말씀 중심:</b> 가사 한 줄에 담긴 복음에 가슴이 뜀</li>
+                                    <li>• <b>삶의 일치:</b> 무대 밖 일상과 뒷정리까지 예배로 드림</li>
+                                </ul>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-purple-500/30 text-sm text-purple-300 font-bold">
+                                ✨ 결과: 나는 사라지고 예수 그리스도만 빛나는 거룩한 성소
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 font-medium text-center">
+                        💡 <b>신학적 팩트체크:</b> 사탄(루시퍼)도 원래 천상에서 가장 화려하게 음악을 관장하던 존재였습니다. <b>'교만'</b>이 예배자를 사탄으로 바꿉니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 03: 커리큘럼 로드맵 도해 -->
+            <div class="slide" id="slide-3" data-cat="가짜 예배자 | 로드맵" data-sub="2주간의 영적 업그레이드 코스" data-week="ROADMAP">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🗺️ 졸면 손해! 2주 완성 예배자 마스터 코스</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            전체 교육 <span class="text-gradient-gold">커리큘럼 아키텍처</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full mb-5">
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-lg bg-purple-600 text-white font-black text-sm">WEEK 01</span>
+                                <span class="text-purple-300 font-bold text-base">신학적 뼈대 세우기 (Why & What)</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-purple-400">01</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">예배란 무엇인가</div>
+                                        <div class="text-sm text-zinc-300">찬양+경배+말씀의 삼중주, 임재의 주권성, 유일한 대상 예수님</div>
+                                    </div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-purple-400">02</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">찬양이란 무엇인가</div>
+                                        <div class="text-sm text-zinc-300">Scripture Song(말씀 찬양) & 성경적 울타리 안의 즉흥/새 노래</div>
+                                    </div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-purple-400">03</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">예배자의 찬양</div>
+                                        <div class="text-sm text-zinc-300">하나님의 귀와 눈을 기쁘시게 하는 음성·손·몸의 전인격 고백</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-lg bg-amber-500 text-black font-black text-sm">WEEK 02</span>
+                                <span class="text-amber-300 font-bold text-base">실전 팀워크 & 영적 수술 (How & Life)</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-amber-400">04</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">예배팀 구성과 소통 기술</div>
+                                        <div class="text-sm text-zinc-300">롬 12:1 산 제물, 9대 포지션, 최고의 연주 '경청', 샌드위치 대화법</div>
+                                    </div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-amber-400">05</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">가짜 예배자의 9가지 질병</div>
+                                        <div class="text-sm text-zinc-300">뼈 때리는 9대 체크리스트 자가진단 & 십자가 보혈을 통한 회복</div>
+                                    </div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center space-x-3">
+                                    <span class="text-2xl font-black text-amber-400">06</span>
+                                    <div>
+                                        <div class="text-lg font-extrabold text-white">악기는 소중하다 (청지기)</div>
+                                        <div class="text-sm text-zinc-300">케이블 밟지 마! 파트별 성물 관리 매뉴얼 & 리더십 피날레</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 04: [W1-01] 예배 공식 도해 (신학적 보완 1 반영) -->
+            <div class="slide" id="slide-4" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="예배의 핵심 공식과 말씀의 조화" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">💡 "찬양만 부르고 설교 때 자면 반쪽짜리 예배자!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배자는 <span class="text-gradient-purple">진정한 예배</span>를 경험해야 한다
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 공예배의 대화 구조 & 찬양+경배 공식 -->
+                    <div class="worship-card w-full p-5 sm:p-6 mb-5 border-purple-500/50 text-center">
+                        <div class="text-xs sm:text-sm font-mono font-bold text-purple-300 mb-2">THE BIBLICAL WORSHIP EQUATION</div>
+                        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-5 text-2xl sm:text-4xl lg:text-5xl font-black">
+                            <span class="px-4 py-2 rounded-xl bg-zinc-900 border border-white/15 text-white">찬양팀의 예배</span>
+                            <span class="text-purple-400">=</span>
+                            <span class="px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-500/40 text-gradient-gold">찬양 (Praise)</span>
+                            <span class="text-purple-400">+</span>
+                            <span class="px-4 py-2 rounded-xl bg-purple-500/15 border border-purple-500/40 text-gradient-purple">경배 (Adoration)</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-4">
+                        <div class="worship-card p-5 border-amber-500/30">
+                            <div class="text-sm font-extrabold text-amber-400 mb-1">🎵 1. 찬양 (Praise)</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">행하심을 높여 외침</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                나를 구원하시고 인도하신 하나님의 <b>위대한 사역(Doing)</b>을 기뻐하며 큰 소리와 악기로 자랑하는 것!
+                            </p>
+                        </div>
+                        <div class="worship-card p-5 border-purple-500/30">
+                            <div class="text-sm font-extrabold text-purple-400 mb-1">🙇 2. 경배 (Adoration)</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">존재 자체 앞에 엎드림</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                내게 뭘 안 주셔도 그분이 나의 창조주이자 왕이시기에, 하나님의 <b>거룩한 성품(Being)</b> 앞에 납작 엎드리는 것!
+                            </p>
+                        </div>
+                        <div class="worship-card p-5 border-blue-500/40 bg-blue-950/15">
+                            <div class="text-sm font-extrabold text-blue-400 mb-1">📖 3. 말씀과의 결합 (신학 핵심)</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">계시와 응답의 만남</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                공예배는 <b>하나님의 말씀 선포(계시)</b>와 <b>우리의 찬양·경배(응답)</b>가 만나는 거룩한 언약적 대화입니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-3.5 rounded-xl theo-box text-sm sm:text-base text-zinc-100 text-center">
+                        ⚡ <b>팩폭 한 줄:</b> 무대 위에서 찬양은 열정적으로 해놓고, 내려와서 목사님 설교 시간에 꿀잠 자면 그것은 '공연'이지 '예배'가 아닙니다!
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 05: [W1-01] 찬양(讚揚) 한자 도해 -->
+            <div class="slide" id="slide-5" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="찬양(讚揚)의 진짜 뜻" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🪁 "내 고음을 날리는 게 아니라 하나님의 이름을 날리는 것!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            찬양(<span class="text-gradient-gold">讚揚</span>)의 한자적·신학적 해부
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 w-full items-center mb-6">
+                        <div class="md:col-span-5 worship-card p-6 border-amber-500/40 text-center">
+                            <div class="text-6xl sm:text-7xl font-black text-amber-400 mb-3">讚</div>
+                            <div class="text-2xl font-extrabold text-white mb-2">기릴 찬 (Praise / Extol)</div>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                말씀 언(言) + 도울 찬(贊).<br>
+                                입술의 말로써 하나님의 선하심과 위대하심을 <b>힘껏 칭찬하고 자랑한다</b>는 뜻입니다.
+                            </p>
+                        </div>
+
+                        <div class="md:col-span-1 flex items-center justify-center text-4xl font-black text-amber-400">+</div>
+
+                        <div class="md:col-span-5 worship-card p-6 border-amber-500/40 text-center">
+                            <div class="text-6xl sm:text-7xl font-black text-amber-400 mb-3">揚</div>
+                            <div class="text-2xl font-extrabold text-white mb-2">날릴 양 (Lift High / Fly)</div>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                손 수(扌) + 볕 양(易).<br>
+                                손으로 깃발을 높이 치켜들어 <b>하늘 끝까지 휘날리게 올려드린다</b>는 뜻입니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 시각 도해: 방향성 비교 -->
+                    <div class="worship-card w-full p-5 border-white/15 bg-zinc-950/90 flex flex-col sm:flex-row items-center justify-around gap-4 text-center">
+                        <div class="text-rose-400 font-bold text-base sm:text-lg">
+                            ❌ 가짜 찬양: 내 노래 실력과 기타 속주를 무대 앞으로 날림 (자기 과시)
+                        </div>
+                        <div class="text-zinc-500 hidden sm:inline">|</div>
+                        <div class="text-amber-300 font-extrabold text-base sm:text-lg">
+                            ⭕ 진짜 찬양: 하나님의 칭찬을 하늘 보좌로 쏘아 올림 (히 13:15 찬송의 제사)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 06: [W1-01] 경배(敬拜) 한자 도해 -->
+            <div class="slide" id="slide-6" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="경배(敬拜)의 진짜 뜻" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">👑 "왕 앞에 서는데 주머니에 손 넣고 껌 씹을 수 있을까?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            경배(<span class="text-gradient-purple">敬拜</span>)의 한자적·신학적 해부
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 w-full items-center mb-6">
+                        <div class="md:col-span-5 worship-card p-6 border-purple-500/40 text-center">
+                            <div class="text-6xl sm:text-7xl font-black text-purple-400 mb-3">敬</div>
+                            <div class="text-2xl font-extrabold text-white mb-2">공경할 경 (Reverence)</div>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                옷깃을 여미고 몸가짐을 삼가며,<br>
+                                지극히 높으신 분 앞에서 <b>거룩한 두려움(경외함)</b>을 품는 마음의 태도입니다.
+                            </p>
+                        </div>
+
+                        <div class="md:col-span-1 flex items-center justify-center text-4xl font-black text-purple-400">+</div>
+
+                        <div class="md:col-span-5 worship-card p-6 border-purple-500/40 text-center">
+                            <div class="text-6xl sm:text-7xl font-black text-purple-400 mb-3">拜</div>
+                            <div class="text-2xl font-extrabold text-white mb-2">절 배 (Bow Down)</div>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                두 손을 바닥에 짚고 무릎을 꿇어,<br>
+                                <b>나의 자존심과 왕권을 완전히 내려놓고 항복</b>하는 몸의 태도입니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        📖 <b>성경 원어 도해:</b> 구약 히브리어 <b>'샤하(Shachah)'</b>와 신약 헬라어 <b>'프로스키네오(Proskuneo)'</b> 모두 <b>"바닥에 납작 엎드려 왕의 발에 입 맞추다"</b>라는 뜻입니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 07: [W1-01] 하나님의 임재 (시편 63편 도해) -->
+            <div class="slide" id="slide-7" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="하나님의 임재: 시편 63편" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🏜️ "물 한 방울 없는 광야에서 다윗이 진짜 목말랐던 것은?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배의 심장: <span class="text-gradient-blue">하나님의 임재 (Presence)</span>
+                        </h2>
+                    </div>
+
+                    <div class="worship-card w-full p-6 mb-5 border-blue-500/40 bg-blue-950/20">
+                        <div class="text-sm font-mono font-bold text-blue-300 mb-2">PSALM 63:2-4 (다윗이 유다 광야에 있을 때)</div>
+                        <blockquote class="text-lg sm:text-2xl text-white font-serif italic leading-relaxed mb-5">
+                            "2. 내가 주의 <span class="text-blue-300 font-bold">권능과 영광</span>을 보기 위하여 이와 같이 성소에서 주를 바라보았나이다<br>
+                            3. 주의 <span class="text-amber-300 font-bold">인자하심이 생명보다 나으므로</span> 내 입술이 주를 찬양할 것이라<br>
+                            4. 이러므로 나의 평생에 주를 송축하며 주의 이름으로 말미암아 <span class="text-purple-300 font-bold">나의 손을 들리이다</span>"
+                        </blockquote>
+
+                        <!-- 3단계 시각 플로우 -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/15">
+                            <div class="p-4 rounded-xl bg-zinc-950/80 border border-blue-500/30">
+                                <div class="text-base font-extrabold text-blue-300 mb-1">STEP 1. 영적 시선 (2절)</div>
+                                <div class="text-sm sm:text-base text-zinc-200">고난의 현실이 아니라 성소에 계신 <b>주의 권능과 영광</b>을 주목함</div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-zinc-950/80 border border-amber-500/30">
+                                <div class="text-base font-extrabold text-amber-300 mb-1">STEP 2. 가치관 역전 (3절)</div>
+                                <div class="text-sm sm:text-base text-zinc-200">내 목숨·성적·인기보다 <b>주님의 사랑(헤세드)이 더 크다</b>고 고백함</div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-zinc-950/80 border border-purple-500/30">
+                                <div class="text-base font-extrabold text-purple-300 mb-1">STEP 3. 전생애 항복 (4절)</div>
+                                <div class="text-sm sm:text-base text-zinc-200">기분 좋을 때만 반짝이 아니라 <b>평생에 두 손을 들고</b> 송축함</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 08: [W1-01] 예배의 유일한 대상 (과녁 도해) -->
+            <div class="slide" id="slide-8" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="예배의 유일한 대상: 예수 그리스도" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎯 "과녁을 벗어난 화살은 아무리 세게 쏴도 0점이다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배자는 오직 <span class="text-gradient-purple">"예수 그리스도"</span>를 예배한다
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-5">
+                        <div class="worship-card p-6 border-rose-500/40 bg-rose-950/15 text-center">
+                            <div class="text-4xl mb-3">🤳</div>
+                            <div class="text-xs font-mono text-rose-400 font-bold mb-1">WRONG TARGET 01</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">자기를 예배하는 것?</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                "오늘 내 핏 어때? 내 하이노트 들었어?"<br>
+                                하나님을 핑계 삼아 <b>내 자아와 인기를 숭배하는 나르시시즘</b>.
+                            </p>
+                        </div>
+
+                        <div class="worship-card p-6 border-amber-500/40 bg-amber-950/15 text-center">
+                            <div class="text-4xl mb-3">🏰</div>
+                            <div class="text-xs font-mono text-amber-400 font-bold mb-1">WRONG TARGET 02</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">교회를 예배하는 것?</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                "친구들 만나러 찬양팀 와요."<br>
+                                예수님과의 인격적 만남 없이 <b>친목과 종교적 분위기에만 취한 상태</b>.
+                            </p>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/60 bg-purple-950/30 text-center relative overflow-hidden">
+                            <div class="text-4xl mb-3">✝️</div>
+                            <div class="text-xs font-mono text-purple-300 font-bold mb-1">THE ONLY TARGET</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">오직 예수 그리스도!</h3>
+                            <p class="text-base text-zinc-100 leading-relaxed font-medium">
+                                나를 위해 십자가에서 피 흘리신 <b>유일한 구원자 예수님</b>께만 우리의 모든 노래와 시선을 고정합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        🔥 <b>개혁주의 제1원리 (Solus Christus):</b> 예배의 주체도, 중보자도, 목적지도 오직 예수 그리스도 한 분뿐입니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 09: [W1-01] 예배팀의 역할 도해 (신학적 보완 2 반영) -->
+            <div class="slide" id="slide-9" data-cat="가짜 예배자 | 1. 예배란 무엇인가" data-sub="예배팀의 역할: 주인공이 아닌 거룩한 통로" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🚰 "수도관이 자기가 물 만든 줄 알면 큰일 납니다"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배팀은 <span class="text-gradient-purple">주인공이 아니라 통로</span>다
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 시선의 흐름 다이어그램 -->
+                    <div class="worship-card w-full p-6 mb-5 border-purple-500/40">
+                        <div class="text-center text-sm font-mono text-purple-300 font-bold mb-4">VISUAL FLOW OF WORSHIP LEADERSHIP</div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-center text-center">
+                            <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-700">
+                                <div class="text-2xl mb-1">🧑‍🤝‍🧑</div>
+                                <div class="text-lg font-extrabold text-white">온 회중 (친구들)</div>
+                                <div class="text-xs text-zinc-400">어색함·피곤함·산만함</div>
+                            </div>
+                            <div class="text-2xl font-black text-purple-400">➔</div>
+                            <div class="p-4 rounded-xl bg-purple-950/40 border-2 border-purple-500">
+                                <div class="text-2xl mb-1">🎸🙏</div>
+                                <div class="text-lg font-extrabold text-purple-200">찬양팀 (영적 마중물)</div>
+                                <div class="text-xs text-purple-300">우리는 투명해지고 주님만 가리킴</div>
+                            </div>
+                            <div class="text-2xl font-black text-amber-400">➔</div>
+                            <div class="p-4 rounded-xl bg-amber-950/30 border-2 border-amber-400">
+                                <div class="text-2xl mb-1">👑✨</div>
+                                <div class="text-lg font-extrabold text-amber-300">하나님의 임재와 교제</div>
+                                <div class="text-xs text-amber-200">약속하신 은혜의 보좌 (마 18:20)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center leading-relaxed">
+                        💡 <b>신학적 안전장치 (임재의 주권성):</b> 하나님의 임재는 우리의 화려한 연주 기술로 '조작하거나 불러내는 것'이 아닙니다.<br>
+                        이미 우리 가운데 임마누엘로 계신 주님께 <b>회중이 마음 문을 열고 반응하도록 돕는 겸손한 마중물</b>이 바로 예배팀입니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10: [W1-02] 찬양의 두 물줄기 (신학적 보완 3 반영) -->
+            <div class="slide" id="slide-10" data-cat="가짜 예배자 | 2. 찬양이란" data-sub="찬양의 두 기둥: 말씀 찬양과 성령의 새 노래" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">⚖️ "진리 없는 열정은 위험하고, 열정 없는 진리는 메마르다"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            찬양의 두 기둥: <span class="text-gradient-gold">말씀(Word)과 성령(Spirit)</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full mb-5">
+                        <div class="worship-card p-6 border-blue-500/40 bg-blue-950/15">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 font-bold text-xs">PILLAR 01 • 객관적 진리의 뿌리</span>
+                                <span class="text-sm font-mono text-blue-400">성경 말씀</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-2">Scripture Song (말씀 찬양)</h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed mb-3">
+                                인간의 감상이나 유행을 넘어, <b>성경 말씀을 문자 그대로 인용하여 곡조로 선포하는 찬양</b>입니다.
+                            </p>
+                            <div class="p-3 rounded-lg bg-zinc-950/80 text-sm text-blue-200">
+                                ✔ 흔들리지 않는 교리적 기준 • 영적 전쟁에서 사탄을 꺾는 말씀의 검(엡 6:17)
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40 bg-purple-950/15">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded bg-purple-500/20 text-purple-300 font-bold text-xs">PILLAR 02 • 인격적 고백의 꽃</span>
+                                <span class="text-sm font-mono text-purple-400">성령의 감동</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-2">Spontaneous & Prophetic Song</h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed mb-3">
+                                말씀의 은혜에 감격하여, <b>성령의 인도하심 속에서 즉흥적인 고백과 권면(고전 14:3)으로 화답하는 새 노래</b>입니다.
+                            </p>
+                            <div class="p-3 rounded-lg bg-zinc-950/80 text-sm text-purple-200">
+                                ✔ <b>주의:</b> 직통계시나 연습 부족의 핑계가 아님! 철저히 <b>성경 진리와 질서(고전 14:40) 안</b>에서 드려져야 함
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: [W1-02] Scripture Song 사례 1 (롬 16:19) -->
+            <div class="slide" id="slide-11" data-cat="가짜 예배자 | 2. 찬양이란" data-sub="Scripture Song 1: 로마서 16:19" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🛡️ "사탄의 멘탈을 부수는 말씀 직구 찬양!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            Scripture Song ①: <span class="text-gradient-blue">로마서 16:19</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 w-full items-center">
+                        <div class="md:col-span-6 worship-card p-4 bg-white text-zinc-900 rounded-xl shadow-2xl cursor-pointer group relative" onclick="openScoreModal('assets/score_romans_16_19.png', 'Romans 16:19 악보')">
+                            <div class="absolute top-2 right-2 px-2.5 py-1 bg-black/80 text-white text-xs font-bold rounded-lg">🔍 클릭하여 크게 보기</div>
+                            <img src="assets/score_romans_16_19.png" alt="Romans 16:19" class="w-full h-auto max-h-64 object-contain mx-auto">
+                        </div>
+
+                        <div class="md:col-span-6 space-y-4">
+                            <div class="worship-card p-5 border-blue-500/40">
+                                <span class="text-xs font-mono font-bold text-blue-400 block mb-1">ROMANS 16:19-20 (원문 가사)</span>
+                                <p class="text-base sm:text-lg text-white font-serif leading-relaxed">
+                                    "선한 데는 지혜롭고 악한 데는 미련하라.<br>
+                                    평강의 주님 속히 사탄을 너희 발 아래에 상하게 하리!"
+                                </p>
+                            </div>
+                            <div class="worship-card p-5 border-amber-500/30 bg-amber-950/10">
+                                <div class="text-base font-extrabold text-amber-300 mb-1">🤔 우리들의 뼈아픈 반성</div>
+                                <p class="text-base text-zinc-200 leading-relaxed">
+                                    요즘 우리는 반대로 살고 있지 않나요?<br>
+                                    세상 잔머리와 유행(악한 데)에는 기가 막히게 빠르고, 성경 말씀과 기도(선한 데)에는 한없이 둔한 모습을 회개합시다!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: [W1-02] Scripture Song 사례 2 (시편 139편) -->
+            <div class="slide" id="slide-12" data-cat="가짜 예배자 | 2. 찬양이란" data-sub="Scripture Song 2: 시편 139편" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🔍 "내 알고리즘보다 나를 더 잘 아시는 주님!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            Scripture Song ②: <span class="text-gradient-purple">시편 139편</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 w-full items-center">
+                        <div class="md:col-span-5 worship-card p-4 bg-white text-zinc-900 rounded-xl shadow-2xl cursor-pointer relative" onclick="openScoreModal('assets/score_psalm_139.jpeg', '시편 139편 악보')">
+                            <div class="absolute top-2 right-2 px-2.5 py-1 bg-black/80 text-white text-xs font-bold rounded-lg">🔍 클릭하여 크게 보기</div>
+                            <img src="assets/score_psalm_139.jpeg" alt="시편 139편" class="w-full h-auto max-h-64 object-contain mx-auto">
+                        </div>
+
+                        <div class="md:col-span-7 space-y-4">
+                            <div class="worship-card p-5 border-purple-500/40">
+                                <span class="text-xs font-mono font-bold text-purple-400 block mb-1">PSALM 139 (나보다 나를 잘 아시는 주님)</span>
+                                <p class="text-base sm:text-lg text-white font-serif leading-relaxed">
+                                    "나보다 나를 잘 아시는 주님 내가 주를 떠나 어디로 가겠나이까<br>
+                                    나 어딜 가든지 주의 손이 나를 인도하시며 주의 오른손이 나를 붙드시리다"
+                                </p>
+                            </div>
+                            <div class="worship-card p-5 border-white/15">
+                                <div class="text-base font-extrabold text-purple-300 mb-1">💜 코람데오(Coram Deo)의 위로</div>
+                                <p class="text-base text-zinc-200 leading-relaxed">
+                                    사람들 앞에서는 밝은 척 연기할 수 있어도, 우리의 속마음과 눈물을 다 아시는 하나님 앞에서는 가면을 벗어도 됩니다. 그것이 진짜 예배의 시작입니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 13: [W1-02] Spontaneous Worship 가이드 도해 -->
+            <div class="slide" id="slide-13" data-cat="가짜 예배자 | 2. 찬양이란" data-sub="성경적 Spontaneous Worship 가이드" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🚫 "연습 안 해놓고 '성령의 인도하심대로 쳤어요' 금지!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            건강한 <span class="text-gradient-gold">Spontaneous Song</span>의 3원칙
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-5">
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <div class="text-3xl mb-2">📖</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">1. 말씀의 토대 (Truth)</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                즉흥적인 고백일지라도 내 감정이나 뜬구름 잡는 소리가 아니라, <b>방금 부른 찬양의 가사와 성경 진리</b>를 깊이 묵상하며 터져 나오는 고백이어야 합니다.
+                            </p>
+                        </div>
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="text-3xl mb-2">🎯</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">2. 치열한 준비 (Skill)</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                곡의 키(Key)와 코드 진행(예: 4-5-6m)을 완벽히 숙지하고 연습한 팀만이, 예배 중 자유로운 화답의 순간에도 <b>불협화음 없이 회중을 도울 수</b> 있습니다.
+                            </p>
+                        </div>
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="text-3xl mb-2">🤝</div>
+                            <h3 class="text-xl font-extrabold text-white mb-2">3. 덕과 질서 (Order)</h3>
+                            <p class="text-base text-zinc-200 leading-relaxed">
+                                나 혼자 도취되어 10분씩 솔로 연주하는 것이 아니라, <b>회중의 기도와 공동체의 덕을 세우는 질서(고전 14:26, 40)</b> 안에서 절제 있게 흘러가야 합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 14: [W1-03] 찬양과 경배의 감각 도해 -->
+            <div class="slide" id="slide-14" data-cat="가짜 예배자 | 3. 예배자의 찬양" data-sub="하나님의 귀와 눈을 기쁘시게!" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎧 "하나님은 음정만 듣지 않으시고 우리의 중심을 보신다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배자의 찬양이 향하는 <span class="text-gradient-purple">두 곳</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-7 border-amber-500/50 bg-amber-950/15 text-center">
+                            <div class="text-5xl mb-3">👂✨</div>
+                            <div class="text-sm font-mono font-bold text-amber-400 mb-1">AUDIBLE WORSHIP</div>
+                            <h3 class="text-2xl sm:text-3xl font-black text-white mb-3">
+                                "찬양은 <span class="text-amber-300">하나님의 귀</span>를<br>즐겁게 한다"
+                            </h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                불평과 험담으로 가득했던 입술을 씻어내고, 주님의 은혜를 진실하게 노래할 때 하늘 아버지의 귀가 기뻐하십니다.
+                            </p>
+                        </div>
+
+                        <div class="worship-card p-7 border-purple-500/50 bg-purple-950/15 text-center">
+                            <div class="text-5xl mb-3">👁️💖</div>
+                            <div class="text-sm font-mono font-bold text-purple-300 mb-1">VISIBLE WORSHIP</div>
+                            <h3 class="text-2xl sm:text-3xl font-black text-white mb-3">
+                                "경배는 <span class="text-purple-300">하나님의 눈</span>을<br>즐겁게 한다"
+                            </h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                교만한 고개를 숙이고 두 손을 들며, 주님 앞에 온몸과 삶을 낮추어 순종할 때 주님의 눈이 우리를 사랑스럽게 바라보십니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        ⚠️ <b>선지서의 경고 (아모스 5:23):</b> 삶 속에서 거룩함과 사랑이 빠진 노래 소리는 하나님께서 <i>"시끄러운 비파 소리를 그치라!"</i>고 말씀하십니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 15: [W1-03] 3대 표현 도해 (음성, 손, 몸) -->
+            <div class="slide" id="slide-15" data-cat="가짜 예배자 | 3. 예배자의 찬양" data-sub="전인격으로 드리는 3대 표현" data-week="1주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🕺 "아이돌 콘서트에선 소리지르고 교회 오면 얼음땡?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            전인격으로 드리는 <span class="text-gradient-blue">찬양의 3대 액션</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-5">
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-3xl">🗣️</span>
+                                <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 font-bold text-xs">ACTION 01</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-3">음성으로!</h3>
+                            <div class="space-y-2 text-base sm:text-lg text-zinc-200">
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>입으로:</b> 마스크 뒤에서 립싱크 금지!</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>노래로:</b> 마음을 담은 멜로디와 화음</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>큰 소리로:</b> 어둠을 깨우는 승리의 외침</div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-3xl">🙌</span>
+                                <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-xs">ACTION 02</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-3">손으로!</h3>
+                            <div class="space-y-2 text-base sm:text-lg text-zinc-200">
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>손뼉 치며:</b> 주님의 왕 되심을 열렬히 환영</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>손을 들고:</b> "주님, 저 완전히 항복합니다!"</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>악기로:</b> 최고의 연습으로 다듬어진 연주</div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-3xl">🧎</span>
+                                <span class="px-2.5 py-1 rounded bg-purple-500/20 text-purple-300 font-bold text-xs">ACTION 03</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white mb-3">몸으로!</h3>
+                            <div class="space-y-2 text-base sm:text-lg text-zinc-200">
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>무릎 꿇고:</b> 가장 깊은 겸손과 복종의 자세</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>침묵으로:</b> 말씀 앞에 잠잠히 귀 기울임</div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900">• <b>서서 & 춤추며:</b> 구원의 감격으로 기뻐 뜀</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 16: [W2-04] 로마서 12:1 산 제물 도해 -->
+            <div class="slide" id="slide-16" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="거룩한 산 제물 (로마서 12:1)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🔥 "죽은 제물은 제단에서 안 도망가지만, 산 제물은 자꾸 기어 내려온다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            건강한 예배팀의 조건: <span class="text-gradient-rose">거룩한 산 제물</span>
+                        </h2>
+                    </div>
+
+                    <div class="worship-card w-full p-6 sm:p-7 mb-5 border-rose-500/40 bg-rose-950/15">
+                        <div class="text-sm font-mono font-bold text-rose-400 mb-2">ROMANS 12:1 (로마서 12장 1절)</div>
+                        <blockquote class="text-xl sm:text-3xl font-extrabold text-white leading-snug mb-5">
+                            "여러분의 몸을 하나님이 기뻐하시는 <span class="text-rose-400 underline decoration-rose-500/50">거룩한 산 제물</span>로 드리십시오.<br>
+                            이것은 여러분이 드릴 <span class="text-amber-300">영적(합당한) 예배</span>입니다."
+                        </blockquote>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/15">
+                            <div class="p-4 rounded-xl bg-zinc-950/80">
+                                <div class="text-lg font-extrabold text-rose-300 mb-1">🐑 구약의 죽은 제물 vs 신약의 산 제물</div>
+                                <p class="text-base text-zinc-200">양을 잡아 바치듯, 이제는 살아있는 우리의 <b>시간, 실력, 자존심, 일상</b>을 주님의 뜻 앞에 매일 태워 드리는 것입니다.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-zinc-950/80">
+                                <div class="text-lg font-extrabold text-amber-300 mb-1">🎸 찬양팀의 진짜 실력이란?</div>
+                                <p class="text-base text-zinc-200">What does it take to have a successful worship team? 화려한 장비가 아니라 <b>자기 자신을 제물로 바친 사람</b>입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 17: [W2-04] 9대 포지션 아키텍처 맵 -->
+            <div class="slide" id="slide-17" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="그리스도의 몸: 9대 포지션 아키텍처" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🧩 "어벤져스도 혼자선 타노스 못 이긴다! 원팀(One Team) 예배자"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            하나의 예배를 세우는 <span class="text-gradient-purple">9개의 지체 (고전 12장)</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 w-full mb-4">
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-purple-500/30">
+                            <img src="assets/icon_mic_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">01. 인도자</div>
+                                <div class="text-sm text-zinc-300">송리스트 기획 · 영적 흐름 가이드</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-blue-500/30">
+                            <span class="text-3xl shrink-0">🗣️</span>
+                            <div>
+                                <div class="text-lg font-extrabold text-white">02. 싱어 (보컬)</div>
+                                <div class="text-sm text-zinc-300">회중의 거울 · 화음과 가사 전달</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-amber-500/30">
+                            <img src="assets/icon_piano_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">03. 메인건반</div>
+                                <div class="text-sm text-zinc-300">기본 리듬 뼈대 · 코드 보이싱 색채</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-purple-500/30">
+                            <span class="text-3xl shrink-0">🎹</span>
+                            <div>
+                                <div class="text-lg font-extrabold text-white">04. 세컨건반</div>
+                                <div class="text-sm text-zinc-300">스트링·패드·브라스로 공간 감싸기</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-rose-500/30">
+                            <img src="assets/icon_drum_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">05. 드럼</div>
+                                <div class="text-sm text-zinc-300">심장 박동(BPM) · 리듬 패턴 주도</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-amber-500/30">
+                            <img src="assets/icon_acoustic_guitar_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">06. 어쿠스틱 기타</div>
+                                <div class="text-sm text-zinc-300">16비트 커팅 리듬감 · 감성 아르페지오</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-blue-500/30">
+                            <img src="assets/icon_electric_guitar_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">07. 일렉기타</div>
+                                <div class="text-sm text-zinc-300">이펙터 사운드 · 리프와 편곡 에너지</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-emerald-500/30">
+                            <img src="assets/icon_bass_guitar_3d.png" class="w-12 h-12 object-contain shrink-0">
+                            <div>
+                                <div class="text-lg font-extrabold text-white">08. 베이스기타</div>
+                                <div class="text-sm text-zinc-300">드럼과 한 몸 · 화성의 근음(Root) 기둥</div>
+                            </div>
+                        </div>
+                        <div class="worship-card p-4 flex items-center space-x-3.5 border-amber-400/60 bg-amber-950/20">
+                            <span class="text-3xl shrink-0">🎛️</span>
+                            <div>
+                                <div class="text-lg font-extrabold text-amber-300">09. 음향·자막 엔지니어</div>
+                                <div class="text-sm text-zinc-200">전체 톤 밸런스 · 가장 중요한 가사 PPT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 18: [W2-04] 인도자 & 싱어 상세 -->
+            <div class="slide" id="slide-18" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="포지션 ① 인도자 & 싱어" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎤 "가사 못 외워서 프롬프터만 뚫어져라 보면 회중도 같이 눈치 봄!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            포지션 디테일 ①: <span class="text-gradient-purple">인도자 & 싱어</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_mic_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-purple-300 font-bold">WORSHIP LEADER</span>
+                                    <h3 class="text-2xl font-extrabold text-white">인도자 (Leader)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>기도로 콘티(송리스트) 작성:</b> 유행곡 짜깁기가 아니라 설교 말씀과 주제를 관통하는 선곡!</li>
+                                <li>• <b>팀원들에게 명확한 디렉팅:</b> 곡의 템포, 다이나믹, 전환 사인을 사전에 공유</li>
+                                <li>• <b>내 감정 과잉 주의:</b> 혼자 눈 감고 도취되지 말고, 회중이 따라오고 있는지 살피는 목자의 눈!</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span class="text-4xl">🗣️</span>
+                                <div>
+                                    <span class="text-xs font-mono text-blue-300 font-bold">VOCALISTS</span>
+                                    <h3 class="text-2xl font-extrabold text-white">싱어 (Singers)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>회중의 거울(Mirror):</b> 싱어의 표정, 손듦, 태도가 그대로 회중석에 복사됩니다.</li>
+                                <li>• <b>가사 완벽 암기:</b> 가사를 외워야 악보에서 눈을 떼고 하나님과 회중을 바라볼 수 있습니다.</li>
+                                <li>• <b>블렌딩(Blending):</b> 내 목소리만 튀는 솔로 가수가 아니라, 인도자의 소리를 감싸는 화음!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 19: [W2-04] 메인건반 & 세컨건반 상세 -->
+            <div class="slide" id="slide-19" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="포지션 ② 메인건반 & 세컨건반" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎹 "기도 시간에 딴짓하다가 인도자 사인 놓치면 정적 흐른다..."</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            포지션 디테일 ②: <span class="text-gradient-gold">메인건반 & 세컨건반</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_piano_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-amber-300 font-bold">MAIN KEYBOARD</span>
+                                    <h3 class="text-2xl font-extrabold text-white">메인건반 (Piano)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>화성과 리듬의 중심 기둥:</b> 곡 전체의 기본 리듬감과 코드 보이싱을 이끄는 핵심!</li>
+                                <li>• <b>절제된 연주:</b> 풀 밴드가 함께 칠 때는 왼손 저음(베이스 음역)과 과도한 애드리브를 덜어내기</li>
+                                <li>• <b>영적 흐름의 연결고리:</b> 곡과 곡 사이, 멘트와 통성기도 시간의 영적 온도를 깨우어 지탱함</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span class="text-4xl">🌌</span>
+                                <div>
+                                    <span class="text-xs font-mono text-purple-300 font-bold">SECOND KEYBOARD / SYNTH</span>
+                                    <h3 class="text-2xl font-extrabold text-white">세컨건반 (Synth & Pad)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>사운드의 빈 공간을 채우는 접착제:</b> 스트링, 워십 패드, 브라스로 웅장함과 따뜻함을 더함</li>
+                                <li>• <b>음색(Patch) 선택의 센스:</b> 곡의 분위기에 맞는 음색을 미리 세팅하고 볼륨 편차를 조절!</li>
+                                <li>• <b>메인건반과의 역할 분담:</b> 메인건반이 리드할 땐 넓게 받쳐주고, 인트로/간주 땐 시그니처 멜로디 담당</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 20: [W2-04] 드럼 & 베이스 상세 -->
+            <div class="slide" id="slide-20" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="포지션 ③ 드럼 & 베이스기타" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🥁 "드럼과 베이스가 싸우면 예배당 전체가 멀미합니다"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            포지션 디테일 ③: <span class="text-gradient-rose">드럼 & 베이스기타</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-rose-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_drum_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-rose-300 font-bold">DRUMS</span>
+                                    <h3 class="text-2xl font-extrabold text-white">드럼 (Drums)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>찬양팀의 심장 박동(BPM):</b> 흥분해서 빨라지거나 처지지 않도록 흔들림 없는 템포 유지!</li>
+                                <li>• <b>다이나믹의 지휘자:</b> 무조건 세게 치는 것이 실력이 아니라, 작고 섬세한 터치(Ghost note, Cymbal swell)가 진짜 실력!</li>
+                                <li>• <b>가사 묵상:</b> 필인(Fill-in) 하나도 내 손기술 자랑이 아니라 가사의 고조를 돕기 위해 연주</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-emerald-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_bass_guitar_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-emerald-300 font-bold">BASS GUITAR</span>
+                                    <h3 class="text-2xl font-extrabold text-white">베이스기타 (Bass)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>리듬(드럼)과 화성(건반)의 다리:</b> 드럼의 킥(Kick)과 한 몸처럼 맞물리며 코드의 근음(Root)을 든든히 받침</li>
+                                <li>• <b>뮤트(Mute)와 절제의 미학:</b> 소리를 내는 것만큼 소리를 깔끔하게 끊어주는 것이 밴드 사운드를 정돈함</li>
+                                <li>• <b>보이지 않는 헌신:</b> 평소엔 티가 안 나도, 빠지면 사운드 전체가 무너지는 예배팀의 숨은 기둥!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 21: [W2-04] 통기타 & 일렉기타 상세 -->
+            <div class="slide" id="slide-21" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="포지션 ④ 어쿠스틱 & 일렉기타" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎸 "설교 시간 전에 앰프 켜고 '징징~' 튜닝 소음 내는 사람 누구야!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            포지션 디테일 ④: <span class="text-gradient-blue">어쿠스틱 & 일렉기타</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_acoustic_guitar_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-amber-300 font-bold">ACOUSTIC GUITAR</span>
+                                    <h3 class="text-2xl font-extrabold text-white">어쿠스틱 기타 (Acoustic)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>찰랑거리는 리듬 엔진:</b> 스트로크와 16비트 커팅으로 찬양에 생동감 있는 추진력을 부여함</li>
+                                <li>• <b>따뜻한 감성 전달:</b> 조용한 경배 곡에서는 섬세한 아르페지오로 회중의 마음을 녹여줌</li>
+                                <li>• <b>정확한 튜닝 필수:</b> 개방현 코드가 많으므로 예배 전 반드시 완벽하게 튜닝을 마칠 것!</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_electric_guitar_3d.png" class="w-12 h-12 object-contain">
+                                <div>
+                                    <span class="text-xs font-mono text-blue-300 font-bold">ELECTRIC GUITAR</span>
+                                    <h3 class="text-2xl font-extrabold text-white">일렉기타 (Electric)</h3>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200 leading-snug">
+                                <li>• <b>모던 워십의 색채 화가:</b> 드라이브, 딜레이, 리버브 등 공간계 이펙터로 입체적인 사운드 연출</li>
+                                <li>• <b>보컬을 덮지 않는 매너:</b> 싱어가 노래할 때는 백킹(Backing)으로 받치고, 간주/클라이맥스에서 에너지를 폭발!</li>
+                                <li>• <b>노이즈 관리:</b> 연주하지 않는 순서나 기도 시간에는 볼륨 페달/뮤트를 철저히 확인할 것!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 22: [W2-04] 음향 & 자막 엔지니어 상세 -->
+            <div class="slide" id="slide-22" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="포지션 ⑤ 음향 & 자막 엔지니어" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🖥️ "자막 한 박자 늦으면 온 교회가 허밍으로 부른다! 제일 중요한 포지션!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            포지션 디테일 ⑤: <span class="text-gradient-gold">음향 & 자막 엔지니어</span>
+                        </h2>
+                    </div>
+
+                    <div class="worship-card w-full p-6 mb-5 border-amber-400/60 bg-amber-950/20 text-center">
+                        <div class="text-xl sm:text-2xl font-black text-amber-300 mb-2">
+                            👑 "방송실은 찬양팀의 '보조'가 아니라, 예배 전체를 완성하는 '보이지 않는 지휘자'입니다!"
+                        </div>
+                        <p class="text-base sm:text-lg text-zinc-200">
+                            무대 위 악기팀이 아무리 잘 쳐도, 음향 밸런스가 깨지거나 자막이 멈추면 회중은 예배에 집중할 수 없습니다.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">🎚️ 음향 엔지니어 (Sound PA)</h3>
+                            <ul class="space-y-2 text-base sm:text-lg text-zinc-200">
+                                <li>• <b>전체 밸런스 조율:</b> 특정 악기만 튀지 않고 인도자의 목소리와 가사가 또렷이 들리도록 믹싱</li>
+                                <li>• <b>모니터링 지원:</b> 찬양팀원들이 서로의 소리를 잘 들을 수 있도록 모니터 스피커 케어</li>
+                                <li>• <b>하우링(피드백) 방어:</b> 리허설 때 주파수를 미리 잡고 예배 내내 긴장감 있게 콘솔을 지킴</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">📽️ 자막 엔지니어 (Lyrics / PPT)</h3>
+                            <ul class="space-y-2 text-base sm:text-lg text-zinc-200">
+                                <li>• <b>반 박자 빠른 센스:</b> 현재 부르는 줄이 끝나기 직전(마지막 두 글자쯤)에 다음 슬라이드로 넘겨야 회중이 끊기지 않고 부름!</li>
+                                <li>• <b>찬양 흐름 완벽 숙지:</b> 인도자가 후렴(Chorus)으로 돌아가는지, 2절로 가는지 리허설부터 함께 호흡하며 찬양해야 함</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 23: [W2-04] 경청 도해 (파형 비교) -->
+            <div class="slide" id="slide-23" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="최고의 연주 기술: 경청 (Listening)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">👂 "내 악기 소리만 크게 해달라고 하면 백 프로 하수!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            찬양팀 최고의 테크닉: <span class="text-gradient-emerald">경청 (Listening)</span>
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 사운드 파형 비교 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-rose-500/40 bg-rose-950/15">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 font-bold text-xs">❌ 이기적인 연주 (Noise)</span>
+                                <span class="text-sm text-rose-400 font-bold">각자 자기 소리만 키움</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">"내 모니터에 내 소리 더 키워주세요!"</h3>
+                            <!-- Waveform visual -->
+                            <div class="h-16 bg-zinc-950 rounded-xl p-3 flex items-end justify-around gap-1 mb-3 border border-rose-500/30">
+                                <div class="w-full bg-rose-500 h-full rounded"></div>
+                                <div class="w-full bg-rose-400 h-5/6 rounded"></div>
+                                <div class="w-full bg-rose-600 h-full rounded"></div>
+                                <div class="w-full bg-rose-500 h-full rounded"></div>
+                                <div class="w-full bg-rose-400 h-4/5 rounded"></div>
+                                <div class="w-full bg-rose-600 h-full rounded"></div>
+                                <div class="w-full bg-rose-500 h-full rounded"></div>
+                            </div>
+                            <p class="text-base text-zinc-200">
+                                옆 사람이 뭘 치는지 안 듣고 내 손가락 화려한 것만 신경 쓰면, 결과물은 <b>예배당을 찢어놓는 소음 공해</b>가 됩니다.
+                            </p>
+                        </div>
+
+                        <div class="worship-card p-6 border-emerald-500/40 bg-emerald-950/15">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold text-xs">⭕ 경청하는 연주 (Harmony)</span>
+                                <span class="text-sm text-emerald-300 font-bold">서로의 빈자리를 채움</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">"다른 악기와 싱어 소리에 귀를 열자!"</h3>
+                            <!-- Harmonious Waveform visual -->
+                            <div class="h-16 bg-zinc-950 rounded-xl p-3 flex items-center justify-around gap-1.5 mb-3 border border-emerald-500/30">
+                                <div class="w-full bg-emerald-400/70 h-2/5 rounded"></div>
+                                <div class="w-full bg-blue-400/80 h-3/5 rounded"></div>
+                                <div class="w-full bg-purple-400 h-4/5 rounded"></div>
+                                <div class="w-full bg-amber-400 h-full rounded"></div>
+                                <div class="w-full bg-purple-400 h-4/5 rounded"></div>
+                                <div class="w-full bg-blue-400/80 h-3/5 rounded"></div>
+                                <div class="w-full bg-emerald-400/70 h-2/5 rounded"></div>
+                            </div>
+                            <p class="text-base text-zinc-200">
+                                내 볼륨을 한 발짝 낮추고 <b>팀 전체의 합주 소리를 먼저 들을 때</b>, 비로소 회중의 마음을 울리는 천상의 하모니가 탄생합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        📖 <b>빌립보서 2:3의 음악적 적용:</b> "아무 일에든지 다툼이나 허영으로 하지 말고 오직 겸손한 마음으로 <b>각각 자기보다 남을 낫게 여기고</b>"
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 24: [W2-04] 소통의 기술 (샌드위치 대화법 도해) -->
+            <div class="slide" id="slide-24" data-cat="가짜 예배자 | 4. 예배팀의 구성" data-sub="예배팀 소통의 기술: 샌드위치 피드백" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🥪 "팩트폭행만 던지면 상처받고, 칭찬만 하면 실력이 안 는다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            사탄이 틈타지 못하는 <span class="text-gradient-gold">샌드위치 소통법</span>
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 3층 샌드위치 구조 -->
+                    <div class="w-full max-w-4xl space-y-3 mb-5">
+                        <div class="worship-card p-4 sm:p-5 border-amber-500/50 bg-amber-950/25 flex items-center space-x-4">
+                            <span class="text-3xl sm:text-4xl">🍞</span>
+                            <div>
+                                <div class="text-xs font-mono text-amber-300 font-bold">LAYER 1 • 따뜻한 빵 (공감과 칭찬)</div>
+                                <div class="text-lg sm:text-xl font-extrabold text-white">"오늘 후렴구에서 네가 잡아준 리듬이랑 표정 진짜 은혜로웠어!"</div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-4 sm:p-5 border-emerald-500/50 bg-emerald-950/25 flex items-center space-x-4 ml-4 mr-4">
+                            <span class="text-3xl sm:text-4xl">🥩🥬</span>
+                            <div>
+                                <div class="text-xs font-mono text-emerald-300 font-bold">LAYER 2 • 영양가 있는 속재료 (구체적 요청 & 피드백)</div>
+                                <div class="text-lg sm:text-xl font-extrabold text-white">"그런데 1절 시작할 때는 싱어들 목소리가 잘 들리게 볼륨을 조금만 줄여주면 더 완벽할 것 같아!"</div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-4 sm:p-5 border-amber-500/50 bg-amber-950/25 flex items-center space-x-4">
+                            <span class="text-3xl sm:text-4xl">🍞</span>
+                            <div>
+                                <div class="text-xs font-mono text-amber-300 font-bold">LAYER 3 • 든든한 빵 (신뢰와 격려)</div>
+                                <div class="text-lg sm:text-xl font-extrabold text-white">"네가 우리 팀에 있어서 진짜 든든하다! 이번 주 예배도 같이 파이팅하자!"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-3.5 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        👀 <b>합주 중 소통 꿀팁:</b> 악보만 보지 말고 서로 <b>눈맞춤(Eye-contact)과 미소</b>로 신호를 주고받으세요! (에베소서 4:15 "사랑 안에서 참된 것을 하여")
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 25: [W2-05] 가짜 예배자의 문제 오프닝 (주간 플래너 도해) -->
+            <div class="slide" id="slide-25" data-cat="가짜 예배자 | 5. 가짜 예배자 진단" data-sub="기술보다 먼저 '사람'이 되어야 한다!" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🚨 "연주는 프로급인데 인성과 시간 약속은 불량품?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            연주자가 되기 전에 <span class="text-gradient-rose">"예배하는 사람"</span>이 되라!
+                        </h2>
+                    </div>
+
+                    <!-- 시각 도해: 주간 삶의 우선순위 플래너 비교 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-rose-500/40 bg-rose-950/15">
+                            <div class="text-sm font-mono font-bold text-rose-400 mb-2">❌ FAKE WORSHIPER'S SCHEDULE</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">하나님이 '짜투리'가 된 일주일</h3>
+                            <div class="space-y-2 text-base text-zinc-200">
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>월~금요일</span><span class="text-rose-300 font-bold">말씀·기도 0분 / 릴스·게임 4시간</span></div>
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>토요일 밤</span><span class="text-rose-300 font-bold">새벽 3시까지 놀다가 연습 노쇼</span></div>
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>주일 아침</span><span class="text-rose-300 font-bold">리허설 15분 지각 + 헐레벌떡 등단</span></div>
+                            </div>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40 bg-purple-950/15">
+                            <div class="text-sm font-mono font-bold text-purple-300 mb-2">⭕ TRUE WORSHIPER'S SCHEDULE</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3">예배가 '중심축'이 된 일주일</h3>
+                            <div class="space-y-2 text-base text-zinc-200">
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>월~금요일</span><span class="text-purple-300 font-bold">송리스트 미리 들으며 가사 묵상 & 개인 연습</span></div>
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>토요일 밤</span><span class="text-purple-300 font-bold">주일 컨디션을 위해 일찍 취침 & 기도</span></div>
+                                <div class="p-2.5 rounded bg-zinc-900/90 flex justify-between"><span>주일 아침</span><span class="text-purple-300 font-bold">10분 일찍 도착해 악기 세팅 & 중보기도</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-lg text-zinc-100 text-center">
+                        💥 <b>최요한 집사님의 핵심 메시지:</b> 하나님은 우리의 '남는 시간'이나 '적당한 재능기부'를 원하지 않으십니다. <b>삶의 최우선순위</b>를 원하십니다!
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 26: [W2-05] 가짜 예배자 체크리스트 1~3 -->
+            <div class="slide" id="slide-26" data-cat="가짜 예배자 | 5. 가짜 예배자 진단" data-sub="9대 영적 질병 체크리스트 (1~3)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🩺 "뜨끔하면 솔직하게 체크해보기! (양심에 손 얹고)"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            가짜 예배자 자가진단 <span class="text-gradient-rose">Part 1. 예배와 말씀 태도</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-3.5 w-full mb-4">
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">01. 찬양할 때 가사를 생각하지 않고 흥얼거린다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#영혼없는_멜로디자판기 #마15:8</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    "이 백성이 입술로는 나를 공경하되 마음은 내게서 멀도다" — 가사의 고백 없이 리듬과 코드에만 취해 부르는 노래는 하나님께 닿지 않습니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">02. 찬양은 열심히 하지만 설교 말씀은 듣지 않는다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#무대내려오면_꿀잠모드 #잠28:9</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    내가 주인공인 찬양 순서만 즐기고, 정작 하나님이 말씀하시는 설교 시간에 스마트폰을 보거나 자는 것은 <b>'하나님'이 아니라 '음악'을 예배</b>한 증거입니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">03. 교회에서 찬양보다 세상 노래를 더 흥얼거린다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#예배전_건반으로_가요치기 #거룩한구별</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    💡 <b>신학적 가이드(성속 이원론 주의):</b> 일반 대중음악 자체가 악한 것은 아닙니다! 하지만 <b>예배를 준비하는 거룩한 시간과 성전에서조차</b> 마음을 지키는 구별(잠 4:23)이 무너져 있다면 점검해야 합니다.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 27: [W2-05] 가짜 예배자 체크리스트 4~6 -->
+            <div class="slide" id="slide-27" data-cat="가짜 예배자 | 5. 가짜 예배자 진단" data-sub="9대 영적 질병 체크리스트 (4~6)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🩺 "점점 뼈가 시려온다... 계속 체크해봅시다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            가짜 예배자 자가진단 <span class="text-gradient-rose">Part 2. 공동체와 헌신 태도</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-3.5 w-full mb-4">
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">04. 지금 드리는 예배의 주인이 누군지 망각한다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#내가주인공병 #영적가로채기 #사42:8</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    사람들의 칭찬과 시선에 일희일비하며, 하나님께 돌아가야 할 영광을 무대 위에서 은근슬쩍 가로채는 교만입니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">05. 예배의 자리에 불평, 불만이 가득하다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#투덜이스머프 #선곡불만 #빌2:14</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    "왜 또 이 곡 해요?", "더운데 언제 끝나요?" — 감사가 사라진 원망과 시비는 팀 전체의 영적 사기를 꺾는 가장 빠른 독약입니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">06. 예배팀 연습과 모임에 자주 지각한다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#코리안타임_핑계금지 #왕과의약속 #렘48:10</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    학원이나 친구 약속엔 안 늦으면서 찬양팀 연습에 상습 지각하는 것은, 만왕의 왕이신 하나님과 동료 팀원들의 시간을 가볍게 여기는 태도입니다.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 28: [W2-05] 가짜 예배자 체크리스트 7~9 -->
+            <div class="slide" id="slide-28" data-cat="가짜 예배자 | 5. 가짜 예배자 진단" data-sub="9대 영적 질병 체크리스트 (7~9)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-4">
+                        <span class="wit-badge mb-2">🩺 "마지막 7~9번! 내 영적 건강검진 결과는?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            가짜 예배자 자가진단 <span class="text-gradient-rose">Part 3. 영성과 삶의 열매</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-3 w-full mb-4">
+                        <label class="worship-card p-4 sm:p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">07. 예배를 위해 기도하지 않는다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#기도0분_실력만믿음 #영적방전</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    내 손가락 기술로 음악 소리는 낼 수 있어도, 성령의 기름 부으심과 영적 돌파는 오직 무릎 꿇는 기도로만 일어납니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-4 sm:p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">08. 다른 사람의 실수를 쉽게 판단하고 정죄한다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#박자틀렸다고_째려보기 #마7:1</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    합주 중 코드나 박자를 틀린 친구를 한심하게 쳐다보며 정죄하는 눈빛은, 완벽한 연주보다 형제 사랑을 더 기뻐하시는 주님의 마음을 아프게 합니다.
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="worship-card p-4 sm:p-5 border-rose-500/40 flex items-start space-x-4 cursor-pointer">
+                            <input type="checkbox" class="custom-check mt-1" onchange="updateFakeScore()">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white">09. 예배 후 뒷정리를 하지 않고 사라진다</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-xs font-bold">#아멘하자마자_순간이동 #막10:45</span>
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-300">
+                                    조명 받는 무대 위에서만 서고 싶고, 케이블 감고 쓰레기 줍는 궂은일은 남에게 미루는 것은 종(Servant)의 마음이 아닙니다.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="fakeScoreBanner" class="w-full p-3.5 rounded-xl bg-zinc-900 border border-rose-500/40 text-center text-base sm:text-lg font-bold text-rose-300">
+                        ☝️ 위 체크박스를 클릭해 나의 상태를 점검해 보세요! (현재 체크: <span id="checkedCount">0</span> / 9개)
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 29: [W2-05] 고백과 복음적 회복 (신학적 보완 4 반영) -->
+            <div class="slide" id="slide-29" data-cat="가짜 예배자 | 5. 가짜 예배자 진단" data-sub="절망이 아닌 십자가 은혜로의 회복" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-5xl mx-auto w-full my-auto text-center px-4">
+                    <span class="wit-badge mb-4">✝️ "체크 많이 됐다고 찬양팀 탈퇴하라는 뜻이 아닙니다!"</span>
+                    <h2 class="text-4xl sm:text-6xl font-black text-white tracking-tight mb-6">
+                        "주님, <span class="text-gradient-purple">나는 아무것도 아닙니다</span>"
+                    </h2>
+
+                    <!-- 시각 도해: 율법적 정죄 vs 복음적 은혜의 역전 -->
+                    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 w-full items-center mb-6">
+                        <div class="md:col-span-5 worship-card p-6 border-zinc-700 text-left">
+                            <div class="text-sm font-mono font-bold text-zinc-400 mb-1">STEP 1 • 정직한 자기 부인 (갈 6:3)</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">나의 연약함 인정하기</h3>
+                            <p class="text-base sm:text-lg text-zinc-300 leading-relaxed">
+                                "만일 누가 아무것도 되지 못하고 된 줄로 생각하면 스스로 속임이라"<br>
+                                내 힘과 의지로는 9가지 체크리스트에서 자유로울 수 없는 죄인임을 솔직히 고백합니다.
+                            </p>
+                        </div>
+
+                        <div class="md:col-span-1 text-3xl font-black text-purple-400">➔</div>
+
+                        <div class="md:col-span-5 worship-card p-6 border-purple-500/60 bg-purple-950/30 text-left">
+                            <div class="text-sm font-mono font-bold text-purple-300 mb-1">STEP 2 • 십자가 보혈의 담대함 (히 10:19)</div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-amber-300 mb-2">은혜로 다시 서는 예배자!</h3>
+                            <p class="text-base sm:text-lg text-zinc-100 leading-relaxed">
+                                우리가 예배당에 설 수 있는 자격은 '완벽한 연습'이나 '도덕성'이 아니라, 오직 <b>예수 그리스도의 십자가 보혈의 은혜</b>뿐입니다!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-4 rounded-xl theo-box text-base sm:text-xl text-white font-bold">
+                        🙌 정죄감에 눌려 숨지 마세요! 십자가 보혈로 씻음 받고, <b>더 겸손하고 뜨거운 진짜 예배자</b>로 다시 일어섭시다!
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 30: [W2-06] 악기는 소중하다 (청지기 정체성 도해) -->
+            <div class="slide" id="slide-30" data-cat="가짜 예배자 | 6. 악기는 소중하다" data-sub="성전의 기구를 다루는 청지기(Steward)" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🎸 "내 돈 주고 산 악기는 애지중지, 교회 악기는 막 다룬다고?"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            악기는 소중하다: <span class="text-gradient-gold">청지기(Steward)의 영성</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <div class="text-sm font-mono font-bold text-amber-300 mb-2">1 CHRONICLES 23:5 (구약 레위인의 직무)</div>
+                            <h3 class="text-2xl font-extrabold text-white mb-3">성도들의 헌금으로 세워진 '성물'</h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                우리가 매주 만지는 마이크, 케이블, 건반, 기타, 드럼은 그냥 기계가 아닙니다.<br>
+                                온 성도가 하나님께 드린 <b>귀한 헌금과 기도로 마련된 거룩한 예배의 도구</b>입니다.
+                            </p>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/40">
+                            <div class="text-sm font-mono font-bold text-purple-300 mb-2">LUKE 16:10 (작은 것에 충성된 자)</div>
+                            <h3 class="text-2xl font-extrabold text-white mb-3">악기 정리까지가 예배입니다!</h3>
+                            <p class="text-base sm:text-lg text-zinc-200 leading-relaxed">
+                                "지극히 작은 것에 충성된 자는 큰 것에도 충성되고"<br>
+                                연주가 끝난 뒤 전원을 끄고, 케이블을 바르게 감고, 먼지를 닦아 제자리에 두는 <b>그 손길이 하나님이 받으시는 진짜 경배</b>입니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 31: [W2-06] 장비 관리 매뉴얼 1 (마이크 & 케이블 도해) -->
+            <div class="slide" id="slide-31" data-cat="가짜 예배자 | 6. 악기는 소중하다" data-sub="실전 장비 매뉴얼 ① 마이크 & 케이블" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">🔌 "케이블을 팔꿈치에 칭칭 감으면 안에서 구리선이 비명 지릅니다!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            장비 보호 매뉴얼 ①: <span class="text-gradient-blue">마이크 & 케이블</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-blue-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="assets/icon_mic_3d.png" class="w-12 h-12 object-contain">
+                                <h3 class="text-2xl font-extrabold text-white">마이크 & 스탠드 수칙</h3>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200">
+                                <li>• <b class="text-rose-400">절대 금지:</b> 마이크 헤드를 손바닥으로 '퍽퍽' 치거나 '후후' 불어서 테스트하지 않기! (진동판 손상 1순위)</li>
+                                <li>• <b>스탠드 조절:</b> 나사(클러치)를 풀지 않고 힘으로 억지로 꺾거나 내리지 않기!</li>
+                                <li>• <b>보관:</b> 사용 후에는 습기가 차지 않도록 전용 파우치/보관함에 넣기</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-emerald-500/40">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span class="text-4xl">➰</span>
+                                <h3 class="text-2xl font-extrabold text-white">케이블(라인) 3대 생명 수칙</h3>
+                            </div>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200">
+                                <li>• <b class="text-rose-400">절대 밟지 말 것:</b> 바닥에 깔린 케이블을 밟고 다니면 내부 단선과 노이즈의 원인이 됩니다!</li>
+                                <li>• <b>플러그(머리) 잡고 뽑기:</b> 줄을 잡아당겨 뽑지 말고 반드시 커넥터 몸통을 잡고 뽑기!</li>
+                                <li>• <b>8자 감기(Over-Under):</b> 케이블 고유의 꼬임 방향대로 둥글게 말아 벨크로(찍찍이)로 고정!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 32: [W2-06] 장비 관리 매뉴얼 2 (기타, 베이스, 드럼, 건반) -->
+            <div class="slide" id="slide-32" data-cat="가짜 예배자 | 6. 악기는 소중하다" data-sub="실전 장비 매뉴얼 ② 악기 파트별 수칙" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">⚠️ "'퍼퍽!' 앰프 안 끄고 잭 뽑는 소리 = 음향 엔지니어 심장 멎는 소리"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            장비 보호 매뉴얼 ②: <span class="text-gradient-purple">기타 · 드럼 · 건반</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-5">
+                        <div class="worship-card p-5 border-amber-500/40">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <img src="assets/icon_electric_guitar_3d.png" class="w-10 h-10 object-contain">
+                                <h3 class="text-xl font-extrabold text-white">기타 & 베이스</h3>
+                            </div>
+                            <ul class="space-y-2 text-base text-zinc-200">
+                                <li>• <b>뮤트 후 잭 분리:</b> 반드시 방송실 Mute 확인 또는 앰프 볼륨 0으로 줄인 뒤 케이블 뽑기!</li>
+                                <li>• <b>스탠드 거치:</b> 바닥이나 의자에 기대어 놓지 말고 전용 스탠드/케이스에 보관</li>
+                                <li>• <b>연주 후 관리:</b> 땀 묻은 줄을 마른 융으로 닦아 녹 방지하기</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-5 border-rose-500/40">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <img src="assets/icon_drum_3d.png" class="w-10 h-10 object-contain">
+                                <h3 class="text-xl font-extrabold text-white">드럼 (Drums)</h3>
+                            </div>
+                            <ul class="space-y-2 text-base text-zinc-200">
+                                <li>• <b>심벌 맨손 터치 주의:</b> 손바닥 땀과 염분이 심벌을 부식시킵니다.</li>
+                                <li>• <b>무리한 타격 금지:</b> 분풀이하듯 수직으로 내리찍으면 심벌 크랙과 헤드 파손 발생!</li>
+                                <li>• <b>주변 정리:</b> 부러진 스틱 조각과 악보, 물병을 깨끗이 치우기</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-5 border-purple-500/40">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <img src="assets/icon_piano_3d.png" class="w-10 h-10 object-contain">
+                                <h3 class="text-xl font-extrabold text-white">건반 (Keyboards)</h3>
+                            </div>
+                            <ul class="space-y-2 text-base text-zinc-200">
+                                <li>• <b class="text-rose-400">음료수 반입 절대 금지:</b> 건반 위에 물컵이나 음료수를 올리는 것은 시한폭탄입니다!</li>
+                                <li>• <b>전원 종료 순서:</b> 메인 스피커가 꺼진 후 건반 전원을 끄고, 볼륨 페이더 원위치</li>
+                                <li>• <b>더스트 커버:</b> 퇴실 전 반드시 먼지 덮개를 덮어둘 것!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 33: [W2-06] 팀장의 리더십 & 문의 -->
+            <div class="slide" id="slide-33" data-cat="가짜 예배자 | 6. 악기는 소중하다" data-sub="서번트 리더십 & 소통 창구" data-week="2주차 교육">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="text-center mb-5">
+                        <span class="wit-badge mb-2">👑 "완장 차고 명령하는 보스(Boss)가 아니라, 수건 두르고 발 씻기는 리더(Leader)!"</span>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                            예배팀을 살리는 <span class="text-gradient-gold">서번트 리더십 & 관리</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-5">
+                        <div class="worship-card p-6 border-amber-500/40">
+                            <h3 class="text-2xl font-extrabold text-white mb-3">🤝 팀장(리더)의 3대 사명</h3>
+                            <ul class="space-y-2.5 text-base sm:text-lg text-zinc-200">
+                                <li>• <b>가장 먼저 와서 가장 늦게 나가는 자:</b> 말로만 지시하지 않고 기도와 뒷정리의 모범을 보임</li>
+                                <li>• <b>팀원들의 마음 지킴이:</b> 지친 친구는 없는지, 소외된 파트는 없는지 먼저 다가가는 따뜻함</li>
+                                <li>• <b>최종 안전 점검:</b> 모든 팀원이 나간 후 전원, 케이블, 냉난방기까지 확인하는 책임감</li>
+                            </ul>
+                        </div>
+
+                        <div class="worship-card p-6 border-purple-500/50 bg-purple-950/25 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-white mb-3">🛠️ 장비 이상 및 교육 문의</h3>
+                                <p class="text-base sm:text-lg text-zinc-200 leading-relaxed mb-4">
+                                    악기 고장, 줄 끊어짐, 케이블 노이즈, 건반 페달 이상이 발생했을 때 <b>절대 몰래 숨겨두지 마세요!</b><br>
+                                    즉시 팀장이나 담당 집사님께 알려주어야 다음 주 예배에 차질이 없습니다.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-zinc-950 border border-purple-500/40 flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-mono text-purple-300 font-bold">DIRECTOR & MENTOR</div>
+                                    <div class="text-xl font-black text-white">최요한 집사 (John.C)</div>
+                                </div>
+                                <span class="px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm font-bold">언제든 환영 🙌</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 34: FINALE & QUIZ QR -->
+            <div class="slide" id="slide-34" data-cat="가짜 예배자 | 피날레" data-sub="2026 서중교 중고등부 진짜 예배자의 결단" data-week="FINALE">
+                <div class="flex flex-col items-center justify-center max-w-6xl mx-auto w-full my-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-center">
+                        <div class="md:col-span-7 text-center md:text-left">
+                            <span class="wit-badge mb-3">🏆 "가짜 예배자의 가면을 벗고, 진짜 예배자로!"</span>
+                            <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
+                                하나님이 찾으시는<br>
+                                <span class="text-gradient-purple">그 한 사람의 예배자</span>
+                            </h2>
+                            <blockquote class="p-5 rounded-xl bg-purple-950/30 border-l-4 border-purple-400 text-base sm:text-xl text-zinc-100 font-serif italic mb-5 leading-relaxed">
+                                "아버지께 참으로 예배하는 자들은 영과 진리로 예배할 때가 오나니 곧 이 때라 아버지께서는 자기에게 이렇게 예배하는 자들을 찾으시느니라" (요한복음 4:23)
+                            </blockquote>
+                            <p class="text-base sm:text-lg text-zinc-300 leading-relaxed">
+                                2026년 서중교 중고등부 찬양팀 여러분!<br>
+                                우리의 음악이 끝나고 조명이 꺼진 뒤에도, 우리의 삶과 마음이 주님 앞에 향기로운 산 제물로 남기를 축복합니다!
+                            </p>
+                        </div>
+
+                        <div class="md:col-span-5">
+                            <div class="worship-card p-6 border-amber-500/50 bg-zinc-950/90 text-center">
+                                <div class="text-xs font-mono font-bold text-amber-400 mb-1">WORKSHOP FINAL MISSION</div>
+                                <h3 class="text-2xl font-black text-white mb-3">📱 예배자 교육 확인 퀴즈</h3>
+                                <div class="bg-white p-3 rounded-xl inline-block mb-3 shadow-xl cursor-pointer" onclick="openScoreModal('assets/qr_quiz.png', '예배자 워크샵 퀴즈 QR')">
+                                    <img src="assets/qr_quiz.png" alt="Quiz QR" class="w-40 h-40 sm:w-44 sm:h-44 object-contain mx-auto">
+                                </div>
+                                <p class="text-sm sm:text-base text-zinc-300">
+                                    스마트폰 카메라로 QR 코드를 스캔하여<br>오늘 배운 내용을 퀴즈로 점검해 보세요!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Progress Bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-zinc-900 z-40">
+                <div id="progressBar" class="h-full bg-gradient-to-r from-purple-500 via-blue-400 to-amber-400 transition-all duration-300" style="width: 2.94%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score / Image Zoom Modal -->
+    <div id="scoreModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" onclick="closeScoreModal()">
+        <div class="max-w-4xl w-full bg-zinc-950 border border-white/20 rounded-2xl p-4 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-3">
+                <h3 id="scoreModalTitle" class="text-lg font-extrabold text-white">악보 확대 보기</h3>
+                <button onclick="closeScoreModal()" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold">닫기 ✕</button>
+            </div>
+            <div class="bg-white rounded-xl p-2 flex items-center justify-center max-h-[78vh] overflow-auto">
+                <img id="scoreModalImg" src="" alt="Zoom" class="max-w-full max-h-[74vh] object-contain">
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide Index Drawer Modal -->
+    <div id="indexModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" onclick="toggleSlideIndex()">
+        <div class="max-w-5xl w-full max-h-[85vh] bg-zinc-950 border border-white/15 rounded-2xl p-6 shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                <div>
+                    <h3 class="text-xl font-black text-white">전체 슬라이드 목차 (34 Slides)</h3>
+                    <p class="text-xs text-zinc-400">원하는 슬라이드를 클릭하면 즉시 이동합니다.</p>
+                </div>
+                <button onclick="toggleSlideIndex()" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold">닫기 ✕</button>
+            </div>
+            <div id="indexGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 overflow-y-auto pr-1"></div>
+        </div>
+    </div>
+
+    <script>
+        const totalSlides = 34;
+        let currentSlide = 1;
+        let isAnimating = false;
+
+        function updateHeaderAndProgress() {
+            const activeEl = document.getElementById(`slide-${currentSlide}`);
+            if (activeEl) {
+                document.getElementById('headerCategory').textContent = activeEl.getAttribute('data-cat') || '가짜 예배자';
+                document.getElementById('headerSubtitle').textContent = activeEl.getAttribute('data-sub') || '';
+                document.getElementById('weekBadge').textContent = activeEl.getAttribute('data-week') || 'WORKSHOP';
+            }
+            const numStr = String(currentSlide).padStart(2, '0');
+            document.getElementById('slideIndicator').textContent = `${numStr} / ${totalSlides}`;
+            document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function goToSlide(target) {
+            if (target < 1 || target > totalSlides || target === currentSlide || isAnimating) return;
+            isAnimating = true;
+            const direction = target > currentSlide ? 'forward' : 'backward';
+            const prevEl = document.getElementById(`slide-${currentSlide}`);
+            const nextEl = document.getElementById(`slide-${target}`);
+
+            document.querySelectorAll('.slide').forEach(el => {
+                if (el !== prevEl && el !== nextEl) {
+                    el.classList.remove('active', 'outgoing-forward', 'outgoing-backward');
+                }
+            });
+
+            if (prevEl) {
+                prevEl.classList.remove('active');
+                prevEl.classList.add(direction === 'forward' ? 'outgoing-forward' : 'outgoing-backward');
+            }
+            if (nextEl) {
+                nextEl.classList.remove('outgoing-forward', 'outgoing-backward');
+                nextEl.classList.add('active');
+                nextEl.scrollTop = 0;
+            }
+
+            currentSlide = target;
+            updateHeaderAndProgress();
+
+            setTimeout(() => {
+                if (prevEl) prevEl.classList.remove('outgoing-forward', 'outgoing-backward');
+                isAnimating = false;
+            }, 290);
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides) goToSlide(currentSlide + 1); }
+        function prevSlide() { if (currentSlide > 1) goToSlide(currentSlide - 1); }
+
+        function openScoreModal(src, title) {
+            document.getElementById('scoreModalImg').src = src;
+            document.getElementById('scoreModalTitle').textContent = title;
+            const modal = document.getElementById('scoreModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeScoreModal() {
+            const modal = document.getElementById('scoreModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleSlideIndex() {
+            const modal = document.getElementById('indexModal');
+            if (modal.classList.contains('hidden')) {
+                buildIndexGrid();
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function buildIndexGrid() {
+            const grid = document.getElementById('indexGrid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const el = document.getElementById(`slide-${i}`);
+                const sub = el ? el.getAttribute('data-sub') : `Slide ${i}`;
+                const week = el ? el.getAttribute('data-week') : '';
+                const btn = document.createElement('button');
+                btn.className = `p-3 rounded-xl border text-left transition-all flex items-center justify-between ${i === currentSlide ? 'bg-purple-950/60 border-purple-400 text-white' : 'bg-zinc-900/80 border-white/10 text-zinc-300 hover:border-white/30'}`;
+                btn.onclick = () => { toggleSlideIndex(); goToSlide(i); };
+                btn.innerHTML = `<div class="truncate pr-2"><span class="font-mono text-xs text-purple-400 font-bold mr-1.5">#${String(i).padStart(2,'0')}</span><span class="text-sm font-bold">${sub}</span></div><span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 shrink-0">${week}</span>`;
+                grid.appendChild(btn);
+            }
+        }
+
+        function updateFakeScore() {
+            const count = document.querySelectorAll('.custom-check:checked').length;
+            const countEl = document.getElementById('checkedCount');
+            if (countEl) countEl.textContent = count;
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault(); nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault(); prevSlide();
+            } else if (e.key === 'Escape') {
+                closeScoreModal();
+                document.getElementById('indexModal').classList.add('hidden');
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+                if (dx < 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        updateHeaderAndProgress();
+    </script>
+</body>
+</html>
